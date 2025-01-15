@@ -68,22 +68,40 @@ const EventsPage = ({ params }: { params: Promise<{ id: string }> }) => {
       )}
 
       {/* Sub-images */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-        {gallery.galleryPhotos.slice(1).map((photo, index) => (
-          <div
-            key={photo.id}
-            className="relative aspect-square bg-muted rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={() => setCurrentImageIndex(index + 1)} // Set the clicked image as the main image
-          >
-            <Image
-              src={photo.imageUrl || "/placeholder.svg"}
-              alt={photo.subject}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ))}
+      <div className="p-4">
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-center mb-4">
+          {gallery.title || "Gallery Title"}
+        </h1>
+
+        {/* Description/Paragraph */}
+        <p className="text-gray-600 text-center mb-6">
+          {gallery.subject || "Explore our photo gallery to relive the moments captured beautifully. Click on the thumbnails below to view the images in full size."}
+        </p>
+
+        {/* Sub-images Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {gallery.galleryPhotos.length > 1 ? (
+            gallery.galleryPhotos.slice(1).map((photo, index) => (
+              <div
+                key={photo.id}
+                className="relative aspect-square bg-muted rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => setCurrentImageIndex(index + 1)} // Set the clicked image as the main image
+              >
+                <Image
+                  src={photo.imageUrl || "/placeholder.svg"}
+                  alt={photo.subject || "Gallery photo"} // Fallback alt text
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+            ))
+          ) : (
+            <p className="text-muted">No additional photos available.</p>
+          )}
+        </div>
       </div>
+
     </div>
   );
 };
